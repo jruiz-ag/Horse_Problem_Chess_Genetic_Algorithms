@@ -13,7 +13,7 @@
 NAME	= horse_problem
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror
-SRC		= main.c
+SRC		= main.c individuals.c aux_individuals.c algorithm.c
 OBJ_DIR = obj
 OBJECTS	= $(SRC:%.c=$(OBJ_DIR)/%.o)
 LIBFT_DIR = libft/

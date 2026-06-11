@@ -35,6 +35,8 @@ static int	is_valid_input(char *str)
 		++str;
 	if (!is_only_digits(str) || (*str == '0'))
 		return (0);
+	if (ft_atoi(str) < 3)
+		return (0);
 	return (1);
 }
 
@@ -44,9 +46,10 @@ int	main(int argc, char **argv)
 
 	if (argc <=  1 || argc > 2 || !(is_valid_input(argv[1])))
 	{
-		ft_printf("Not valid input. Please execute: ./horse_problem <positive_int>");
+		ft_printf("Not valid input. Please execute: ./horse_problem (positive_int >= 5)\n");
 		return (0);
 	}
 	input = ft_atoi(argv[1]);
+	algorithm(input);
 	return (0);
 }
