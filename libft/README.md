@@ -143,6 +143,8 @@ Se han implementado funciones nuevas y otras definidas ya en librerías integrad
 
 `ft_split(s, c)` → string → array de strings.
 
+`ft_abs(n)` → int → el valor absoluto del número.
+
 `ft_itoa(n)` → int → string.
 
 `ft_strmapi(s, f)` → aplica función → nueva string.
