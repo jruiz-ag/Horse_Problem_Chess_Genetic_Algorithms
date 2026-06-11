@@ -1,4 +1,4 @@
-*Este proyecto ha sido creado como parte del currículo de 42 por jruiz-ag.*
+*Este proyecto ha sido creado como parte del currículo de jruiz-ag.*
 
 # Libft
 
@@ -7,8 +7,6 @@
 **Libft** es un proyecto fundamental que consiste en recrear una serie de funciones de la biblioteca estándar de C, además de implementar funciones adicionales que serán reutilizadas en futuros proyectos.
 
 El objetivo principal es comprender en profundidad conceptos clave de programación a bajo nivel, como la gestión de memoria, la manipulación de cadenas, el uso de punteros y el diseño modular del código.
-
-Esta librería se convierte en una herramienta personal que se utilizará a lo largo del cursus de 42.
 
 
 ---
