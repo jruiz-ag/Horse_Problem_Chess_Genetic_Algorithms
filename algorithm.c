@@ -77,7 +77,7 @@ int	algorithm(int width)
 
 	gen = 1;
 	parents = first_selection(width);
-	while(gen < NGEN)
+	while ((parents[0]->fitness != (width * width) - 1) && (gen < NGEN)) 
 	{
 		ft_printf("\n --- GENERACION %d --- \n", gen);
 		cont_parents = 0;

@@ -13,8 +13,8 @@
 #ifndef HORSE_PROBLEM_H
 # define HORSE_PROBLEM_H
 
-# define INDIV 1000
-# define NGEN 1000
+# define INDIV 800
+# define NGEN 800
 # define K_SELECT 5
 # define MUTATE_PRC 0.8
 
