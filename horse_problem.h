@@ -15,6 +15,8 @@
 
 # define INDIV 1000
 # define NGEN 1000
+# define K_SELECT 5
+# define MUTATE_PRC 0.8
 
 # include "libft/libft.h"
 
@@ -32,6 +34,12 @@ int		*ft_generate_list_int(int len);
 int		ft_value(int len, int *list, int pos);
 int		ft_extract(int len, int *list, int pos);
 int		algorithm(int width);
-t_indiv *ft_cpy_best(t_indiv **population);
+t_indiv *ft_cpy_best(t_indiv ***population);
+t_indiv	**first_population(int width);
+t_indiv	*free_population(t_indiv ***population, int len);
+t_indiv	**next_populations(int width, t_indiv **parents);
+t_indiv	*ft_assign_same(t_indiv **dest, t_indiv *src);
+void	eval_population(t_indiv ***population);
+void	show_pop(t_indiv **population);
 
 #endif

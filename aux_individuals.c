@@ -12,7 +12,7 @@
 
 #include "horse_problem.h"
 
-static t_indiv	*ft_assign_same(t_indiv **dest, t_indiv *src)
+t_indiv	*ft_assign_same(t_indiv **dest, t_indiv *src)
 {
 	int	cont;
 
@@ -33,7 +33,7 @@ static t_indiv	*ft_assign_same(t_indiv **dest, t_indiv *src)
 	return (*dest);
 }
 
-t_indiv *ft_cpy_best(t_indiv **population)
+t_indiv *ft_cpy_best(t_indiv ***population)
 {
 	int		best;
 	int		cont;
@@ -44,16 +44,18 @@ t_indiv *ft_cpy_best(t_indiv **population)
 	best = -1;
 	while(cont < INDIV)
 	{
-		if (population[cont]->fitness > best)
+		if ((*population)[cont] && (*population)[cont]->fitness > best)
 		{
-			best = population[cont]->fitness;
+			best = (*population)[cont]->fitness;
 			best_idx = cont;
 		}
 		++cont;
 	}
 	res = ft_calloc(1, sizeof(t_indiv));
-	if (!ft_assign_same(&res, population[best_idx]))
+	if (!res || !ft_assign_same(&res, (*population)[best_idx]))
 		return (NULL);
+	free_indiv(&(*population)[best_idx]);
+	(*population)[best_idx] = NULL;
 	return (res);
 }
 

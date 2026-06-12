@@ -13,7 +13,7 @@
 NAME	= horse_problem
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror
-SRC		= main.c individuals.c aux_individuals.c algorithm.c
+SRC		= main.c individuals.c aux_individuals.c algorithm.c populations.c aux_populations.c
 OBJ_DIR = obj
 OBJECTS	= $(SRC:%.c=$(OBJ_DIR)/%.o)
 LIBFT_DIR = libft/
@@ -22,6 +22,9 @@ LIBFT = $(LIBFT_DIR)libft.a
 
 # All needs to be always the first rule
 all: $(NAME)
+
+forzar: $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) -o $(NAME)
 
 # Executable compilation
 $(NAME): $(LIBFT) $(OBJECTS)

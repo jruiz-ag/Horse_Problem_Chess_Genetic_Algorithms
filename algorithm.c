@@ -5,115 +5,92 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jruiz-ag <confidentjaime@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/11 17:07:16 by jruiz-ag          #+#    #+#             */
-/*   Updated: 2026/06/11 17:07:16 by jruiz-ag         ###   ########.fr       */
+/*   Created: 2026/06/12 00:47:04 by jruiz-ag          #+#    #+#             */
+/*   Updated: 2026/06/12 00:47:04 by jruiz-ag         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "horse_problem.h"
 
-static t_indiv	*free_population(t_indiv ***population, int len)
+t_indiv	**first_selection(int width)
 {
-	int	cont;
-
-	cont = 0;
-	while (cont < len)
-	{
-		free_indiv(&((*population)[cont]));
-		++cont;
-	}
-	free(*population);
-	return (NULL);
-}
-
-static int	is_valid_jump(int c1, int c2, int width)
-{
-	int	x1;
-	int	x2;
-	int	y1;
-	int	y2;
-
-	x1 = c1 % width;
-	y1 = c1 / width;
-	x2 = c2 % width;
-	y2 = c2 / width;
-	if ((ft_abs(x1 - x2) == 2) && (ft_abs(y1 - y2) == 1))
-		return (1);
-	if ((ft_abs(x1 - x2) == 1) && (ft_abs(y1 - y2) == 2))
-		return (1);
-	return (0);
-}
-
-static int	fitness(t_indiv *indiv)
-{
-	int	*seq;
-	int	len;
-	int	fit;
-	int	act;
-	int	prev;
-
-	seq = indiv->chromosome;
-	len = 0;
-	fit = 0;		
-	while(len < (indiv->len_chromosome - 1))
-	{
-		act = seq[len + 1];
-		prev = seq[len];
-		if (is_valid_jump(prev, act, (int)ft_sqrt(indiv->len_chromosome)))
-			++fit;
-		++len;
-	}
-	return (fit);
-}
-
-static void	eval_population(t_indiv ***population)
-{
+	t_indiv **population;
+	t_indiv	**parents;
+	t_indiv *best;
 	int		cont;
-	t_indiv *actual;
 
-	cont = 0;
-	while(cont < INDIV)
-	{
-		actual = (*population)[cont];
-		(*population)[cont]->fitness = fitness(actual);
-		++cont;
-	}
-}
-
-static t_indiv	**first_population(int width)
-{
-	int	cont;
-	t_indiv	**population;
-	t_indiv *indiv;
-
-	cont = 0;
-	population = ft_calloc(INDIV, sizeof(t_indiv *));
+	parents = ft_calloc(K_SELECT, sizeof(t_indiv *));
+	if (!parents)
+		return (NULL);
+	population = first_population(width);
 	if (!population)
 		return (NULL);
-	while(cont < INDIV)
+	cont = 0;
+	while(cont < K_SELECT)
 	{
-		indiv = build_indiv(width);
-		if (!indiv)
-			return (free_population(&population, cont), NULL);
-		population[cont] = indiv;
+		best = ft_cpy_best(&population);
+		if (!best)
+		{
+			free_population(&parents, K_SELECT);
+			return (free_population(&population, INDIV), NULL);
+		}
+		parents[cont] = best;
 		++cont;
 	}
-	eval_population(&population);
-	return (population);
+	free_population(&population, INDIV);
+	return (parents);
+}
+
+t_indiv	**next_selections(t_indiv ***population)
+{
+	t_indiv	**parents;
+	t_indiv *best;
+	int		cont;
+
+	parents = ft_calloc(K_SELECT, sizeof(t_indiv *));
+	if (!parents)
+		return (NULL);
+	if (!population || !*population)
+		return (NULL);
+	cont = 0;
+	while(cont < K_SELECT)
+	{
+		best = ft_cpy_best(population);		
+		if (!best)
+		{
+			free_population(&parents, K_SELECT);
+			return (free_population(population, INDIV), NULL);
+		}				
+		parents[cont] = best;		
+		++cont;
+	}		
+	free_population(population, INDIV);
+	return (parents);
 }
 
 int	algorithm(int width)
 {
 	t_indiv **population;
-	t_indiv *best;
+	t_indiv	**parents;
+	int		gen;
+	int		cont_parents;
 
-	population = first_population(width);
-	if (!population)
-		return (-1);
-	best = ft_cpy_best(population);
-	if (!best)
-		return (free_population(&population, INDIV), -1);
-	show_gen(best);
-	free_indiv(&best);
-	return (free_population(&population, INDIV), 0);
+	gen = 1;
+	parents = first_selection(width);
+	while(gen < NGEN)
+	{
+		ft_printf("\n --- GENERACION %d --- \n", gen);
+		cont_parents = 0;
+		while(cont_parents < 1)
+			show_gen(parents[cont_parents++]);
+		population = next_populations(width, parents);
+		free_population(&parents, K_SELECT);
+		if (!population)
+			return (-1);
+		parents = next_selections(&population);	
+		++gen;
+	}	
+	show_gen(parents[0]);
+	free_population(&parents, K_SELECT);		
+	return (0);
 }
